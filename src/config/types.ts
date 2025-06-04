@@ -1,8 +1,9 @@
 import type { IconType } from "react-icons";
 
 export interface DeviceScreenshots {
-	iphone: string[];
-	ipad: string[];
+	iphone?: string[];
+	ipad?: string[];
+	[key: string]: string[] | undefined;
 }
 
 export interface Feature {
@@ -81,8 +82,9 @@ export interface BreadcrumbsProps {
 }
 
 export interface DeviceToggleProps {
-	activeDevice: "iphone" | "ipad";
-	onToggle: (device: "iphone" | "ipad") => void;
+	activeDevice: string;
+	onToggle: (device: string) => void;
+	availablePlatforms: string[];
 }
 
 export interface GithubCornerProps {

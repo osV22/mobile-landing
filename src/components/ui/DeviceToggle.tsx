@@ -1,23 +1,28 @@
 import { motion } from "framer-motion";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import type { DeviceToggleProps } from "config";
 
-const DeviceToggle = ({ activeDevice, onToggle }: DeviceToggleProps) => {
-	const handleIphoneToggle = useCallback(() => onToggle("iphone"), [onToggle]);
-	const handleIpadToggle = useCallback(() => onToggle("ipad"), [onToggle]);
+const DeviceToggle = ({ activeDevice, onToggle, availablePlatforms }: DeviceToggleProps) => {
+	const platformHandlers = useMemo(() => {
+		const handlers: Record<string, () => void> = {};
+		
+		availablePlatforms.forEach(platform => {
+			handlers[platform] = () => onToggle(platform);
+		});
+		
+		return handlers;
+	}, [availablePlatforms, onToggle]);
 
 	return (
 		<div className="flex items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] p-1">
-			<DeviceButton
-				isActive={activeDevice === "iphone"}
-				onClick={handleIphoneToggle}
-				label="iPhone"
-			/>
-			<DeviceButton
-				isActive={activeDevice === "ipad"}
-				onClick={handleIpadToggle}
-				label="iPad"
-			/>
+			{availablePlatforms.map(platform => (
+				<DeviceButton
+					key={platform}
+					isActive={activeDevice === platform}
+					onClick={platformHandlers[platform]}
+					label={platform.charAt(0).toUpperCase() + platform.slice(1)}
+				/>
+			))}
 		</div>
 	);
 };
