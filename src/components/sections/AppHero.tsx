@@ -32,18 +32,22 @@ const AppHero = ({ title, description, storeLinks, logo }: AppHeroProps) => {
 				</div>
 
 				<div className="flex flex-wrap gap-4">
-					<StoreButton
-						store="apple"
-						href={storeLinks.apple}
-						label="Download on the"
-						storeName="App Store"
-					/>
-					<StoreButton
-						store="google"
-						href={storeLinks.google}
-						label="Get it on"
-						storeName="Google Play"
-					/>
+					{storeLinks.apple && (
+						<StoreButton
+							store="apple"
+							href={storeLinks.apple}
+							label="Download on the"
+							storeName="App Store"
+						/>
+					)}
+					{storeLinks.google && (
+						<StoreButton
+							store="google"
+							href={storeLinks.google}
+							label="Get it on"
+							storeName="Google Play"
+						/>
+					)}
 				</div>
 			</div>
 		</div>
