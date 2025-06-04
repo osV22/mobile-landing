@@ -13,8 +13,10 @@ declare global {
 const Lightbox = ({ images }: LightboxProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [activeDevice, setActiveDevice] = useState<string>("iphone");
-	const currentImages = images[activeDevice];
+
+	const availableDevices = Object.keys(images).filter(key => Array.isArray(images[key]));
+	const [activeDevice, setActiveDevice] = useState<string>(availableDevices[0] || "");
+	const currentImages = images[activeDevice] || [];
 
 	useEffect(() => {
 		window.openLightbox = (index: number, device: string) => {
@@ -32,13 +34,17 @@ const Lightbox = ({ images }: LightboxProps) => {
 	}, []);
 
 	const handlePrevious = useCallback(() => {
-		setCurrentIndex(
-			(prev) => (prev - 1 + currentImages.length) % currentImages.length,
-		);
+		if (currentImages.length > 0) {
+			setCurrentIndex(
+				(prev) => (prev - 1 + currentImages.length) % currentImages.length,
+			);
+		}
 	}, [currentImages.length]);
 
 	const handleNext = useCallback(() => {
-		setCurrentIndex((prev) => (prev + 1) % currentImages.length);
+		if (currentImages.length > 0) {
+			setCurrentIndex((prev) => (prev + 1) % currentImages.length);
+		}
 	}, [currentImages.length]);
 
 	useEffect(() => {
@@ -78,11 +84,13 @@ const Lightbox = ({ images }: LightboxProps) => {
 						<FiChevronLeft size={24} />
 					</button>
 
-					<img
-						src={currentImages[currentIndex]}
-						alt={`Screenshot ${currentIndex + 1}`}
-						className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl border border-white/10"
-					/>
+					{currentImages.length > 0 && (
+						<img
+							src={currentImages[currentIndex]}
+							alt={`Screenshot ${currentIndex + 1}`}
+							className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl border border-white/10"
+						/>
+					)}
 
 					<button
 						type="button"
@@ -92,18 +100,20 @@ const Lightbox = ({ images }: LightboxProps) => {
 						<FiChevronRight size={24} />
 					</button>
 
-					<div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-						{currentImages.map((image, index) => (
-							<button
-								type="button"
-								key={image}
-								onClick={() => setCurrentIndex(index)}
-								className={`h-2 w-2 rounded-full transition-colors ${
-									index === currentIndex ? "bg-white" : "bg-white/30"
-								}`}
-							/>
-						))}
-					</div>
+					{currentImages.length > 0 && (
+						<div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+							{currentImages.map((image, index) => (
+								<button
+									type="button"
+									key={image}
+									onClick={() => setCurrentIndex(index)}
+									className={`h-2 w-2 rounded-full transition-colors ${
+										index === currentIndex ? "bg-white" : "bg-white/30"
+									}`}
+								/>
+							))}
+						</div>
+					)}
 				</motion.div>
 			)}
 		</AnimatePresence>
