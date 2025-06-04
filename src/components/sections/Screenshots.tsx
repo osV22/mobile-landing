@@ -109,10 +109,12 @@ const Screenshots = ({ images }: ScreenshotsProps) => {
 									<img
 										src={image}
 										alt={`Screenshot ${index + 1}`}
-										className={`rounded-xl border border-white/10 object-cover ${
+										className={`rounded-xl border object-cover ${
 											activeDevice === "iphone"
-												? "aspect-[9/16] w-[260px]"
-												: "aspect-[4/3] w-[360px]"
+												? "aspect-[9/16] w-[260px] border-white/10"
+												: activeDevice === "vision"
+													? "aspect-[4/3] w-[360px] border-blue-400/30"
+													: "aspect-[4/3] w-[360px] border-white/10"
 										}`}
 										loading="lazy"
 									/>

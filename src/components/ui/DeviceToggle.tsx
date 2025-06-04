@@ -2,6 +2,16 @@ import { motion } from "framer-motion";
 import { memo, useCallback, useMemo } from "react";
 import type { DeviceToggleProps } from "config";
 
+// Helper function to get proper display label for each platform
+const getDeviceLabel = (platform: string): string => {
+	switch (platform) {
+		case 'iphone': return 'iPhone';
+		case 'ipad': return 'iPad';
+		case 'vision': return 'Vision';
+		default: return platform.charAt(0).toUpperCase() + platform.slice(1);
+	}
+};
+
 const DeviceToggle = ({ activeDevice, onToggle, availablePlatforms }: DeviceToggleProps) => {
 	const platformHandlers = useMemo(() => {
 		const handlers: Record<string, () => void> = {};
@@ -20,7 +30,7 @@ const DeviceToggle = ({ activeDevice, onToggle, availablePlatforms }: DeviceTogg
 					key={platform}
 					isActive={activeDevice === platform}
 					onClick={platformHandlers[platform]}
-					label={platform.charAt(0).toUpperCase() + platform.slice(1)}
+					label={getDeviceLabel(platform)}
 				/>
 			))}
 		</div>
