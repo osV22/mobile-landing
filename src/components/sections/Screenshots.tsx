@@ -10,6 +10,8 @@ function getScreenshotHeight(device: string): string {
 			return 'min-h-[400px]';
 		case 'ipad':
 			return 'min-h-[300px]';
+		case 'vision':
+			return 'min-h-[300px]';
 		default:
 			return 'min-h-[350px]';
 	}

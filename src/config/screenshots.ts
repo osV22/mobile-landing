@@ -11,4 +11,9 @@ export const screenshots: DeviceScreenshots = {
 		"screenshots/ipad/2.png",
 		"screenshots/ipad/3.png",
 	],
+	vision: [
+		"screenshots/vision/1.png",
+		"screenshots/vision/2.png",
+		"screenshots/vision/3.png",
+	],
 };
